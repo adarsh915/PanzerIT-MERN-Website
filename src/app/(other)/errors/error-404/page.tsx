@@ -28,8 +28,8 @@ const Error404Page = () => {
               <p className="text-muted mb-3">Sorry, we can't find the page you're looking for We suggest you to go homepage</p>
               <Link href="/" className="btn btn-primary">Back to Home <IconifyIcon icon='tabler:home' className="ms-1" /></Link>
             </div>
-            <p className="mt-3 mb-0">
-             {currentYear} © Greeva - By <span className="fw-bold text-decoration-underline text-uppercase text-reset fs-12">Coderthemes</span>
+            <p className="mt-3 mb-0 text-muted fs-13">
+             {currentYear} © Panzer IT - Make &apos;IT&apos; Secure
             </p>
           </Card>
         </Col>

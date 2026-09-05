@@ -90677,7 +90677,7 @@ body {
 }
 
 .panzer-page-solution-details .panzer-solution-detail-section {
-  padding: clamp(56px, 7vw, 94px) 0;
+  padding: clamp(56px, 7vw, 60px) 0;
   overflow: visible !important;
 }
 

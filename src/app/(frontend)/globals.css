@@ -403,3 +403,10 @@ i.fa-solid {
   border-radius: 4px;
   margin-bottom: 1em;
 }
+
+/* 404 Page Card Styles */
+.panzer-404-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(16, 83, 243, 0.12) !important;
+  border-color: rgba(16, 83, 243, 0.3) !important;
+}
