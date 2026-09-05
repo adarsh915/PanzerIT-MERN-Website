@@ -1,18 +1,31 @@
 'use server'
 
 import pool from '@/lib/db'
+import { getSessionUser } from '@/lib/session'
 import type { LeadStatus, WebsiteLead } from './leadTypes'
 
 export type { LeadStatus, WebsiteLead }
 
+async function checkAuth() {
+  const sessionUser = await getSessionUser()
+  if (!sessionUser) {
+    throw new Error('Unauthorized')
+  }
+  if (sessionUser.role !== 'admin' && sessionUser.role !== 'manager') {
+    throw new Error('Forbidden: Only admins and managers can access leads')
+  }
+}
+
 // Legacy function for backward compatibility
 export const readLeads = async (): Promise<WebsiteLead[]> => {
+  await checkAuth()
   const result = await readLeadsPaginated(1, 1000)
   return result.leads
 }
 
 // New paginated function
 export const readLeadsPaginated = async (page: number = 1, limit: number = 10): Promise<{ leads: WebsiteLead[], total: number }> => {
+  await checkAuth()
   const offset = (page - 1) * limit
   
   // Get total count
@@ -46,19 +59,23 @@ export const readLeadsPaginated = async (page: number = 1, limit: number = 10): 
 }
 
 export const updateLeadStatus = async (id: string, status: LeadStatus): Promise<void> => {
+  await checkAuth()
   await pool.query('UPDATE leads SET status = ? WHERE id = ?', [status, id])
 }
 
 export const markLeadRead = async (id: string): Promise<void> => {
+  await checkAuth()
   const readAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
   await pool.query('UPDATE leads SET is_read = 1, read_at = ? WHERE id = ? AND is_read = 0', [readAt, id])
 }
 
 export const deleteLead = async (id: string): Promise<void> => {
+  await checkAuth()
   await pool.query('DELETE FROM leads WHERE id = ?', [id])
 }
 
 export const getUnreadLeads = async (limit: number = 5): Promise<WebsiteLead[]> => {
+  await checkAuth()
   const [rows] = await pool.query(
     'SELECT * FROM leads WHERE is_read = 0 ORDER BY created_at DESC LIMIT ?',
     [limit]
@@ -83,11 +100,13 @@ export const getUnreadLeads = async (limit: number = 5): Promise<WebsiteLead[]> 
 }
 
 export const getUnreadCount = async (): Promise<number> => {
+  await checkAuth()
   const [rows] = await pool.query('SELECT COUNT(*) as unreadCount FROM leads WHERE is_read = 0')
   return (rows as any[])[0]?.unreadCount || 0
 }
 
 export const markAllLeadsRead = async (): Promise<void> => {
+  await checkAuth()
   const readAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
   await pool.query('UPDATE leads SET is_read = 1, read_at = ? WHERE is_read = 0', [readAt])
 }

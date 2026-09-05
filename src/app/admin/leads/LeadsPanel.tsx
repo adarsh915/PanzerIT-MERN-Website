@@ -9,6 +9,8 @@ import { Spinner } from 'react-bootstrap'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { deleteLead, markLeadRead, readLeadsPaginated, type WebsiteLead } from './leadStore'
 import { confirmDeleteWithName } from '@/utils/confirmDelete'
+import { useAuthContext } from '@/context/useAuthContext'
+import { exportToCSV } from '@/utils/exportCsv'
 import styles from '../solutions/SolutionsPanel.module.scss'
 
 const PAGE_SIZES = [5, 10, 25, 50]
@@ -29,8 +31,11 @@ const formatDateTime = (value?: string) => {
 
 const LeadsPanel = () => {
   const queryClient = useQueryClient()
+  const { user } = useAuthContext()
   const [selectedLead, setSelectedLead] = useState<WebsiteLead | null>(null)
   const [search, setSearch] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
   const [sortKey, setSortKey] = useState<keyof WebsiteLead>('submittedAt')
@@ -52,22 +57,42 @@ const LeadsPanel = () => {
     const query = search.toLowerCase().trim()
 
     return leads
-      .filter((lead) =>
-        !query ||
-        lead.name.toLowerCase().includes(query) ||
-        lead.email.toLowerCase().includes(query) ||
-        (lead.company || '').toLowerCase().includes(query) ||
-        (lead.subject || '').toLowerCase().includes(query) ||
-        lead.message.toLowerCase().includes(query) ||
-        (lead.pageSource || '').toLowerCase().includes(query),
-      )
+      .filter((lead) => {
+        const queryMatch = !query ||
+          lead.name.toLowerCase().includes(query) ||
+          lead.email.toLowerCase().includes(query) ||
+          (lead.company || '').toLowerCase().includes(query) ||
+          (lead.subject || '').toLowerCase().includes(query) ||
+          lead.message.toLowerCase().includes(query) ||
+          (lead.pageSource || '').toLowerCase().includes(query)
+
+        // Date filter
+        let matchesDate = true
+        if (startDate || endDate) {
+          const subDate = new Date(lead.submittedAt)
+          subDate.setHours(0, 0, 0, 0)
+          
+          if (startDate) {
+            const start = new Date(startDate)
+            start.setHours(0, 0, 0, 0)
+            if (subDate < start) matchesDate = false
+          }
+          if (endDate) {
+            const end = new Date(endDate)
+            end.setHours(0, 0, 0, 0)
+            if (subDate > end) matchesDate = false
+          }
+        }
+
+        return queryMatch && matchesDate
+      })
       .sort((a, b) => {
         const first = String(a[sortKey] ?? '')
         const second = String(b[sortKey] ?? '')
         const compare = first.localeCompare(second, undefined, { numeric: true })
         return sortDir === 'asc' ? compare : -compare
       })
-  }, [leads, search, sortKey, sortDir])
+  }, [leads, search, startDate, endDate, sortKey, sortDir])
 
   const unreadCount = leads.filter((lead) => !lead.read).length
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
@@ -79,6 +104,23 @@ const LeadsPanel = () => {
       setSortKey(key)
       setSortDir('asc')
     }
+  }
+
+  const handleExportCSV = () => {
+    const exportData = filtered.map((lead, index) => ({
+      '#': index + 1,
+      'Date / Time': formatDateTime(lead.submittedAt),
+      'Name': lead.name,
+      'Company': lead.company || '-',
+      'Email': lead.email,
+      'Phone': lead.phone || '-',
+      'Subject / Service': lead.subject || '-',
+      'Page Source': lead.pageSource || '-',
+      'Status': lead.read ? 'Read' : 'Unread'
+    }))
+    
+    const dateStr = new Date().toISOString().split('T')[0]
+    exportToCSV(exportData, `website_leads_${dateStr}`)
   }
 
   const handleMarkRead = async (lead: WebsiteLead) => {
@@ -117,13 +159,25 @@ const LeadsPanel = () => {
       <PageTitle title="Leads" subTitle="Panzer IT" />
 
       <div className={styles.card}>
-        <div className={styles.cardHeader}>
+        <div className={styles.cardHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className={styles.cardHeaderLeft}>
             <IconifyIcon icon="tabler:mail-opened" />
             <h3>Website Contact Leads</h3>
             <span className={styles.totalBadge}>{leads.length}</span>
             <span className={styles.catChip}>{unreadCount} unread</span>
           </div>
+          {user?.role !== 'author' && (
+            <div>
+              <button 
+                type="button" 
+                className="btn btn-sm btn-soft-success d-flex align-items-center gap-2"
+                onClick={handleExportCSV}
+              >
+                <IconifyIcon icon="tabler:file-spreadsheet" />
+                Export CSV
+              </button>
+            </div>
+          )}
         </div>
 
         {isLoading ? (
@@ -132,8 +186,8 @@ const LeadsPanel = () => {
           </div>
         ) : (
           <>
-            <div className={styles.tableControls}>
-              <div className={styles.pageSizeWrap}>
+            <div className={styles.tableControls} style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
+              <div className={styles.pageSizeWrap} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <select
                   value={pageSize}
                   onChange={(event) => {
@@ -141,22 +195,55 @@ const LeadsPanel = () => {
                     setPage(1)
                   }}
                   aria-label="Entries per page"
+                  className="form-select form-select-sm"
+                  style={{ width: 'auto' }}
                 >
                   {PAGE_SIZES.map((size) => <option key={size} value={size}>{size}</option>)}
                 </select>
-                <span>entries per page</span>
+                <span className="text-muted fs-13">entries</span>
               </div>
-              <div className={styles.searchWrap}>
-                <span>Search:</span>
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(event) => {
-                    setSearch(event.target.value)
-                    setPage(1)
-                  }}
-                  aria-label="Search website leads"
-                />
+
+              <div className="d-flex align-items-center gap-2 flex-wrap">
+                <div className="d-flex align-items-center gap-2">
+                  <span className="text-muted fs-13">From:</span>
+                  <input 
+                    type="date" 
+                    className="form-control form-control-sm" 
+                    value={startDate} 
+                    onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+                  />
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <span className="text-muted fs-13">To:</span>
+                  <input 
+                    type="date" 
+                    className="form-control form-control-sm" 
+                    value={endDate} 
+                    onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
+                  />
+                </div>
+                {(startDate || endDate) && (
+                  <button 
+                    className="btn btn-sm btn-light"
+                    onClick={() => { setStartDate(''); setEndDate(''); setPage(1); }}
+                  >
+                    Clear
+                  </button>
+                )}
+                
+                <div className={styles.searchWrap} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span className="text-muted fs-13">Search:</span>
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    value={search}
+                    onChange={(event) => {
+                      setSearch(event.target.value)
+                      setPage(1)
+                    }}
+                    aria-label="Search website leads"
+                  />
+                </div>
               </div>
             </div>
 
@@ -199,9 +286,11 @@ const LeadsPanel = () => {
                             <button type="button" className={styles.btnEdit} onClick={() => openLead(lead)} title="View lead">
                               <IconifyIcon icon="tabler:eye" />
                             </button>
-                            <button type="button" className={styles.btnDelete} onClick={() => handleDelete(lead)} title="Delete lead">
-                              <IconifyIcon icon="tabler:trash" />
-                            </button>
+                            {user?.role !== 'author' && (
+                              <button type="button" className={styles.btnDelete} onClick={() => handleDelete(lead)} title="Delete lead">
+                                <IconifyIcon icon="tabler:trash" />
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -272,10 +361,12 @@ const LeadsPanel = () => {
               <p><strong>Read:</strong> {selectedLead.read ? `Yes${selectedLead.readAt ? `, ${formatDateTime(selectedLead.readAt)}` : ''}` : 'No'}</p>
               <div className={styles.modalFooter}>
                 <button type="button" className={styles.cancelBtn} onClick={() => setSelectedLead(null)}>Close</button>
-                <button type="button" className={styles.deleteBtn} onClick={() => handleDelete(selectedLead)}>
-                  <IconifyIcon icon="tabler:trash" />
-                  Delete
-                </button>
+                {user?.role !== 'author' && (
+                  <button type="button" className={styles.deleteBtn} onClick={() => handleDelete(selectedLead)}>
+                    <IconifyIcon icon="tabler:trash" />
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           </div>

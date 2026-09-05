@@ -38,11 +38,13 @@ export async function middleware(request: NextRequest) {
 
     // Enforce RBAC
     if (role === 'author') {
-      const allowedPaths = ['/admin', '/admin/', '/admin/posts', '/admin/media', '/admin/profile']
-      const allowedApiPaths = ['/api/admin/posts', '/api/admin/media', '/api/admin/profile']
+      const allowedPaths = ['/admin', '/admin/posts', '/admin/media', '/admin/profile', '/admin/auth']
+      const allowedApiPaths = ['/api/admin/posts', '/api/admin/media', '/api/admin/profile', '/api/auth']
       
-      const isAllowed = allowedPaths.some(p => pathname === p || pathname.startsWith(`${p}/`)) || 
-                        allowedApiPaths.some(p => pathname.startsWith(p))
+      const isAllowed = allowedPaths.some(p => {
+        if (p === '/admin') return pathname === '/admin' || pathname === '/admin/'
+        return pathname === p || pathname.startsWith(`${p}/`)
+      }) || allowedApiPaths.some(p => pathname === p || pathname.startsWith(`${p}/`))
                         
       if (!isAllowed) {
         if (pathname.startsWith('/api/')) {
@@ -56,8 +58,8 @@ export async function middleware(request: NextRequest) {
       const restrictedPaths = ['/admin/users', '/admin/settings']
       const restrictedApiPaths = ['/api/admin/users', '/api/admin/settings']
 
-      const isRestricted = restrictedPaths.some(p => pathname.startsWith(p)) || 
-                           restrictedApiPaths.some(p => pathname.startsWith(p))
+      const isRestricted = restrictedPaths.some(p => pathname === p || pathname.startsWith(`${p}/`)) || 
+                           restrictedApiPaths.some(p => pathname === p || pathname.startsWith(`${p}/`))
                            
       if (isRestricted) {
         if (pathname.startsWith('/api/')) {

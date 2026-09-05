@@ -7,32 +7,40 @@ import { timeSince } from '@/utils/date'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getUnreadLeads, getUnreadCount, markLeadRead, markAllLeadsRead } from '@/app/admin/leads/leadStore'
 import { getUnreadSubmissions, countUnreadSubmissions, markSubmissionRead, markAllSubmissionsRead } from '@/app/admin/resources/questionnaires/questionnaireStore'
+import { useAuthContext } from '@/context/useAuthContext'
 
 const Notifications = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuthContext();
+  
+  const canViewLeads = user?.role === 'admin' || user?.role === 'manager';
 
   const { data: unreadLeads = [] } = useQuery({
     queryKey: ['unreadLeads'],
     queryFn: () => getUnreadLeads(5),
     refetchInterval: 30000,
+    enabled: canViewLeads,
   });
 
   const { data: unreadCount = 0 } = useQuery({
     queryKey: ['unreadCount'],
     queryFn: () => getUnreadCount(),
     refetchInterval: 30000,
+    enabled: canViewLeads,
   });
 
   const { data: unreadSubmissions = [] } = useQuery({
     queryKey: ['unreadSubmissions'],
     queryFn: () => getUnreadSubmissions(5),
     refetchInterval: 30000,
+    enabled: canViewLeads,
   });
 
   const { data: unreadSubmissionsCount = 0 } = useQuery({
     queryKey: ['unreadSubmissionsCount'],
     queryFn: () => countUnreadSubmissions(),
     refetchInterval: 30000,
+    enabled: canViewLeads,
   });
 
   const totalUnread = unreadCount + unreadSubmissionsCount;

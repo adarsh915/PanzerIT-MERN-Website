@@ -8,6 +8,8 @@ import { toast } from 'react-toastify'
 import clsx from 'clsx'
 import styles from '../solutions/SolutionsPanel.module.scss'
 import { confirmDeleteWithName } from '@/utils/confirmDelete'
+import { useAuthContext } from '@/context/useAuthContext'
+import { exportToCSV } from '@/utils/exportCsv'
 
 type Subscriber = {
   id: number
@@ -18,11 +20,14 @@ type Subscriber = {
 const PAGE_SIZES = [5, 10, 25, 50]
 
 export default function NewsletterSubscribers() {
+  const { user } = useAuthContext()
   const [subscribers, setSubscribers] = useState<Subscriber[]>([])
   const [loading, setLoading] = useState(true)
 
   // Datatable state
   const [search, setSearch] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
   const [sortKey, setSortKey] = useState<keyof Subscriber>('subscribed_at')
@@ -50,14 +55,37 @@ export default function NewsletterSubscribers() {
     const query = search.toLowerCase().trim()
 
     return subscribers
-      .filter((sub) => !query || sub.email.toLowerCase().includes(query))
+      .filter((sub) => {
+        // Search filter
+        const matchesSearch = !query || sub.email.toLowerCase().includes(query)
+        
+        // Date filter
+        let matchesDate = true
+        if (startDate || endDate) {
+          const subDate = new Date(sub.subscribed_at)
+          subDate.setHours(0, 0, 0, 0)
+          
+          if (startDate) {
+            const start = new Date(startDate)
+            start.setHours(0, 0, 0, 0)
+            if (subDate < start) matchesDate = false
+          }
+          if (endDate) {
+            const end = new Date(endDate)
+            end.setHours(0, 0, 0, 0)
+            if (subDate > end) matchesDate = false
+          }
+        }
+
+        return matchesSearch && matchesDate
+      })
       .sort((a, b) => {
         const first = String(a[sortKey] ?? '')
         const second = String(b[sortKey] ?? '')
         const compare = first.localeCompare(second, undefined, { numeric: true })
         return sortDir === 'asc' ? compare : -compare
       })
-  }, [subscribers, search, sortKey, sortDir])
+  }, [subscribers, search, startDate, endDate, sortKey, sortDir])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize)
@@ -68,6 +96,17 @@ export default function NewsletterSubscribers() {
       setSortKey(key)
       setSortDir('asc')
     }
+  }
+
+  const handleExportCSV = () => {
+    const exportData = filtered.map((sub, index) => ({
+      '#': index + 1,
+      'Email Address': sub.email,
+      'Date Subscribed': new Date(sub.subscribed_at).toLocaleString()
+    }))
+    
+    const dateStr = new Date().toISOString().split('T')[0]
+    exportToCSV(exportData, `newsletter_subscribers_${dateStr}`)
   }
 
   const handleDelete = async (subscriber: Subscriber) => {
@@ -105,12 +144,24 @@ export default function NewsletterSubscribers() {
       <PageTitle title="Newsletter Subscribers" subTitle="Admin" />
 
       <div className={styles.card}>
-        <div className={styles.cardHeader}>
+        <div className={styles.cardHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className={styles.cardHeaderLeft}>
             <IconifyIcon icon="tabler:mail" />
             <h3>Newsletter Subscribers</h3>
             <span className={styles.totalBadge}>{subscribers.length}</span>
           </div>
+          {user?.role !== 'author' && (
+            <div>
+              <button 
+                type="button" 
+                className="btn btn-sm btn-soft-success d-flex align-items-center gap-2"
+                onClick={handleExportCSV}
+              >
+                <IconifyIcon icon="tabler:file-spreadsheet" />
+                Export CSV
+              </button>
+            </div>
+          )}
         </div>
 
         {loading ? (
@@ -119,8 +170,8 @@ export default function NewsletterSubscribers() {
           </div>
         ) : (
           <>
-            <div className={styles.tableControls}>
-              <div className={styles.pageSizeWrap}>
+            <div className={styles.tableControls} style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
+              <div className={styles.pageSizeWrap} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <select
                   value={pageSize}
                   onChange={(event) => {
@@ -128,22 +179,55 @@ export default function NewsletterSubscribers() {
                     setPage(1)
                   }}
                   aria-label="Entries per page"
+                  className="form-select form-select-sm"
+                  style={{ width: 'auto' }}
                 >
                   {PAGE_SIZES.map((size) => <option key={size} value={size}>{size}</option>)}
                 </select>
-                <span>entries per page</span>
+                <span className="text-muted fs-13">entries</span>
               </div>
-              <div className={styles.searchWrap}>
-                <span>Search:</span>
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(event) => {
-                    setSearch(event.target.value)
-                    setPage(1)
-                  }}
-                  aria-label="Search subscribers"
-                />
+              
+              <div className="d-flex align-items-center gap-2 flex-wrap">
+                <div className="d-flex align-items-center gap-2">
+                  <span className="text-muted fs-13">From:</span>
+                  <input 
+                    type="date" 
+                    className="form-control form-control-sm" 
+                    value={startDate} 
+                    onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+                  />
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <span className="text-muted fs-13">To:</span>
+                  <input 
+                    type="date" 
+                    className="form-control form-control-sm" 
+                    value={endDate} 
+                    onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
+                  />
+                </div>
+                {(startDate || endDate) && (
+                  <button 
+                    className="btn btn-sm btn-light"
+                    onClick={() => { setStartDate(''); setEndDate(''); setPage(1); }}
+                  >
+                    Clear
+                  </button>
+                )}
+                
+                <div className={styles.searchWrap} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span className="text-muted fs-13">Search:</span>
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    value={search}
+                    onChange={(event) => {
+                      setSearch(event.target.value)
+                      setPage(1)
+                    }}
+                    aria-label="Search subscribers"
+                  />
+                </div>
               </div>
             </div>
 
@@ -168,14 +252,16 @@ export default function NewsletterSubscribers() {
                         <td>{new Date(sub.subscribed_at).toLocaleString()}</td>
                         <td>
                           <div className={styles.actions}>
-                            <button 
-                              type="button" 
-                              className={styles.btnDelete} 
-                              onClick={() => handleDelete(sub)} 
-                              title="Delete subscriber"
-                            >
-                              <IconifyIcon icon="tabler:trash" />
-                            </button>
+                            {user?.role !== 'author' && (
+                              <button 
+                                type="button" 
+                                className={styles.btnDelete} 
+                                onClick={() => handleDelete(sub)} 
+                                title="Delete subscriber"
+                              >
+                                <IconifyIcon icon="tabler:trash" />
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>

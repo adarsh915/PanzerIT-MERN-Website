@@ -11,6 +11,9 @@ async function checkAuth() {
   if (!sessionUser) {
     throw new Error('Unauthorized')
   }
+  if (sessionUser.role !== 'admin' && sessionUser.role !== 'manager') {
+    throw new Error('Forbidden: Only admins and managers can manage solutions')
+  }
 }
 import type {
   SolutionCategory,

@@ -8,6 +8,9 @@ async function checkAuth() {
   if (!sessionUser) {
     throw new Error('Unauthorized')
   }
+  if (sessionUser.role !== 'admin') {
+    throw new Error('Forbidden: Only admins can manage settings')
+  }
 }
 
 export const readSetting = async <T>(key: string, defaultValue: T): Promise<T> => {

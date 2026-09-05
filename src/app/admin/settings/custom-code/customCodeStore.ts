@@ -6,7 +6,12 @@ import { getSessionUser } from '@/lib/session'
 
 async function checkAuth() {
   const sessionUser = await getSessionUser()
-  if (!sessionUser) throw new Error('Unauthorized')
+  if (!sessionUser) {
+    throw new Error('Unauthorized')
+  }
+  if (sessionUser.role !== 'admin') {
+    throw new Error('Forbidden: Only admins can manage settings')
+  }
 }
 
 export type CustomCode = {

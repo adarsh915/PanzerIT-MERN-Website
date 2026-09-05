@@ -1,6 +1,7 @@
 'use server'
 
 import pool from '@/lib/db'
+import { getSessionUser } from '@/lib/session'
 
 // Dashboard type definitions
 export type DashboardStats = {
@@ -16,6 +17,13 @@ export type DashboardStats = {
   totalMediaKb: number
   totalResources: number
   totalDownloads: number
+}
+
+async function checkAuth() {
+  const sessionUser = await getSessionUser()
+  if (!sessionUser) {
+    throw new Error('Unauthorized')
+  }
 }
 
 export type DashboardLead = {
@@ -38,6 +46,7 @@ export type DashboardDownload = {
  * Fetches all counts in a single database query instead of loading full datasets
  */
 export async function readDashboardStats(): Promise<DashboardStats> {
+  await checkAuth()
   const [rows] = await pool.query(
     `SELECT 
       (SELECT COUNT(*) FROM blog_posts WHERE status = 'published') as publishedPosts,
@@ -63,6 +72,7 @@ export async function readDashboardStats(): Promise<DashboardStats> {
  * Fetch only recent leads needed for dashboard display
  */
 export async function readRecentLeads(limit: number = 5): Promise<DashboardLead[]> {
+  await checkAuth()
   const [rows] = await pool.query(
     `SELECT id, name, email, status, created_at as createdAt 
      FROM leads 
@@ -84,6 +94,7 @@ export async function readRecentLeads(limit: number = 5): Promise<DashboardLead[
  * Fetch only top downloads for dashboard display
  */
 export async function readTopDownloads(limit: number = 5): Promise<DashboardDownload[]> {
+  await checkAuth()
   const [rows] = await pool.query(
     `SELECT id, title, slug, COALESCE(download_count, 0) as downloadCount
      FROM resources 

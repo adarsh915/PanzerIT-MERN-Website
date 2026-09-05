@@ -2,6 +2,7 @@
 
 import pool from '@/lib/db'
 import { MediaItem } from '@/data/panzer/mock'
+import { getSessionUser } from '@/lib/session'
 
 // Legacy function for backward compatibility
 export const readMedia = async (): Promise<MediaItem[]> => {
@@ -51,6 +52,9 @@ export const readMediaPaginated = async (
 }
 
 export const createMedia = async (data: Omit<MediaItem, 'id' | 'createdAt'>): Promise<MediaItem> => {
+  const sessionUser = await getSessionUser()
+  if (!sessionUser) throw new Error('Unauthorized')
+
   const id = `m${Date.now()}`
   const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
   
@@ -67,6 +71,9 @@ export const createMedia = async (data: Omit<MediaItem, 'id' | 'createdAt'>): Pr
 }
 
 export const updateMedia = async (id: string, data: Partial<MediaItem>): Promise<MediaItem | undefined> => {
+  const sessionUser = await getSessionUser()
+  if (!sessionUser) throw new Error('Unauthorized')
+
   if (data.filename !== undefined) {
     await pool.query('UPDATE media_items SET filename = ? WHERE id = ?', [data.filename, id])
   }
@@ -90,5 +97,8 @@ export const updateMedia = async (id: string, data: Partial<MediaItem>): Promise
 }
 
 export const deleteMedia = async (id: string): Promise<void> => {
+  const sessionUser = await getSessionUser()
+  if (!sessionUser) throw new Error('Unauthorized')
+
   await pool.query('DELETE FROM media_items WHERE id = ?', [id])
 }

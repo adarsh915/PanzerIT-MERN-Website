@@ -198,6 +198,12 @@ const MENU_ITEMS_DATA: MenuItemType[] = [
     url: '/admin/media',
   },
   {
+    key: 'profile',
+    label: 'Profile',
+    icon: 'tabler:user',
+    url: '/admin/profile',
+  },
+  {
     key: 'settings',
     label: 'Setting',
     icon: 'tabler:settings',

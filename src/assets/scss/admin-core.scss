@@ -98,3 +98,21 @@ Plugin styles are loaded per-component as needed
 /* purgecss start ignore */
 @import 'react-toastify/dist/ReactToastify.css';
 /* purgecss end ignore */
+
+/* Dashboard Polish */
+.dashboard-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: rgba(0,0,0,0.08);
+}
+.dashboard-icon-box {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dashboard-card:hover .dashboard-icon-box {
+  transform: scale(1.15) rotate(8deg);
+}

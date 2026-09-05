@@ -7,6 +7,9 @@ async function checkAuth() {
   if (!sessionUser) {
     throw new Error('Unauthorized')
   }
+  if (sessionUser.role !== 'admin' && sessionUser.role !== 'manager') {
+    throw new Error('Forbidden: Only admins and managers can access newsletter')
+  }
 }
 
 export async function GET(request: NextRequest) {
