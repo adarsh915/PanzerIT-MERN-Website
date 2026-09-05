@@ -1,0 +1,434 @@
+/* ============================================================
+   Footer Component — footer.module.css
+   Background: dark navy var(--footer-bg, #0b1322) | Accent blue: var(--footer-text-hover, #3a8bf5)
+   ============================================================ */
+
+/* ── Outer section ───────────────────────────────────────── */
+.footerSection {
+  background: var(--footer-bg, #0b1322);
+  border-radius: 16px;
+  margin: 0 20px 20px;
+  padding: 60px 48px 0;
+  overflow: hidden;
+}
+
+.logoImg {
+  max-width: 160px;
+  max-height: 52px;
+  object-fit: contain;
+  width: auto;
+  height: auto;
+}
+
+/* ── TOP ROW ─────────────────────────────────────────────── */
+.topRow {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr minmax(220px, 280px);
+  gap: 40px 32px;
+  padding-bottom: 48px;
+}
+
+/* Brand block */
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.logoWrap img {
+  max-width: 160px;
+  height: auto;
+}
+
+.tagline {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--footer-text-hover, #3a8bf5);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.brandDesc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--footer-text-main, #dde2ec);
+  margin: 0;
+  font-weight: 500;
+  transition: color 0.18s ease;
+}
+
+.brandDesc:hover {
+  color: var(--footer-text-hover, #3a8bf5);
+}
+
+/* Link columns */
+.dynamicLinksWrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+}
+
+.linkColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.colHeading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--footer-text-second, #7d889c);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--footer-border, #1c2638);
+}
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+}
+
+.navLink {
+  font-size: 13.5px;
+  color: var(--footer-text-main, #dde2ec);
+  text-decoration: none;
+  transition: color 0.18s ease;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.navLink:hover {
+  color: var(--footer-text-hover, #3a8bf5);
+}
+
+/* Newsletter block */
+.newsletterBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.newsletterDesc {
+  font-size: 13.5px;
+  color: var(--footer-text-main, #dde2ec);
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
+  transition: color 0.18s ease;
+}
+
+.newsletterDesc:hover {
+  color: var(--footer-text-hover, #3a8bf5);
+}
+
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.inputRow {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--footer-border, #1c2638);
+  background: var(--footer-input-bg, #161f30);
+}
+
+.inputRow button {
+  height: 100%;
+}
+
+.emailInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--footer-text-main, #dde2ec);
+  min-width: 0;
+}
+
+.emailInput::placeholder {
+  color: var(--footer-input-placeholder, #4d5a6e);
+}
+
+.sendBtn {
+  background: #ffffff;
+  color: var(--footer-bg, #0b1322);
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: background 0.18s ease, color 0.18s ease;
+  flex-shrink: 0;
+}
+
+.sendBtn:hover {
+  background: var(--footer-text-hover, #3a8bf5);
+  color: #ffffff;
+}
+
+/* ── MIDDLE ROW — contact bar ────────────────────────────── */
+.contactBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  padding: 28px 0;
+  border-top: 1px solid var(--footer-border, #1c2638);
+}
+
+.contactItems {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contactIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--footer-input-bg, #161f30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--footer-text-hover, #3a8bf5);
+  flex-shrink: 0;
+  border: 1px solid var(--footer-border, #1c2638);
+}
+
+.contactLabel {
+  display: block;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--footer-text-second, #7d889c);
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.contactValue {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--footer-text-main, #dde2ec);
+  text-decoration: none;
+  transition: color 0.18s ease;
+  white-space: nowrap;
+  font-family: var(--body-font);
+}
+
+.contactValue:hover {
+  color: var(--footer-text-hover, #3a8bf5);
+}
+
+/* Social icons */
+.socialIcons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.socialBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--footer-input-bg, #161f30);
+  border: 1px solid var(--footer-border, #1c2638);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--footer-social-icon, #9aa3b5);
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.socialBtn:hover {
+  background: var(--footer-text-hover, #3a8bf5);
+  border-color: var(--footer-text-hover, #3a8bf5);
+  color: #ffffff;
+}
+
+/* ── BOTTOM ROW — copyright bar ─────────────────────────── */
+.bottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 20px 0 24px;
+  border-top: 1px solid var(--footer-border, #1c2638);
+}
+
+.copyright {
+  font-size: 13px;
+  color: var(--footer-text-second, #7d889c);
+  margin: 0;
+}
+
+.bottomRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.privacyLink {
+  font-size: 13px;
+  color: var(--footer-social-icon, #9aa3b5);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.privacyLink:hover {
+  color: var(--footer-text-hover, #3a8bf5);
+}
+
+.scrollTopBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--footer-text-hover, #3a8bf5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--footer-text-hover, #3a8bf5);
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.scrollTopBtn:hover {
+  background: var(--footer-text-hover, #3a8bf5);
+  color: #ffffff;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .contactValue {
+    font-size: 11.5px;
+  }
+
+  .contactBar {
+    justify-content: center;
+  }
+
+  .contactItems {
+    justify-content: center;
+    gap: 20px 26px;
+  }
+
+  .topRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .brandBlock {
+    grid-column: 1 / 2;
+    grid-row: 1;
+  }
+
+  .newsletterBlock {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+
+  .dynamicLinksWrap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 767px) {
+  .footerSection {
+    margin: 0 12px 12px;
+    padding: 48px 24px 0;
+    border-radius: 12px;
+  }
+
+  .topRow {
+    grid-template-columns: 1fr;
+    gap: 28px 20px;
+  }
+
+  .brandBlock {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .linkColumn {
+    gap: 3px;
+  }
+
+  .newsletterBlock {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .dynamicLinksWrap {
+    grid-column: auto;
+    grid-row: auto;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .contactBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .socialIcons {
+    align-self: flex-start;
+  }
+
+  .bottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footerSection {
+    margin: 0 8px 8px;
+    padding: 36px 18px 0;
+  }
+
+  .topRow {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .brandBlock,
+  .newsletterBlock {
+    grid-column: auto;
+  }
+
+  .contactItems {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

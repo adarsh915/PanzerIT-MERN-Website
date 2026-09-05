@@ -1,0 +1,23 @@
+/*
+Plugin styles loaded separately for pages that need them
+This keeps the main admin bundle small
+*/
+
+@import "plugins/simplebar";
+@import "plugins/sweetalert2";
+
+/* Heavy plugins - only import when component is used:
+   - apexcharts (loaded with chart components)
+   - calendar (loaded on calendar page)
+   - gridjs (loaded on table demo pages)
+   - quill-editor (loaded on editor pages)
+   - leaflet-maps (loaded on map pages)
+   - select2 (loaded with select components)
+   - flatpickr (loaded with date pickers)
+   - choice (loaded with choice.js)
+   - daterange (loaded with date range picker)
+   - dragula (loaded with drag-drop)
+   - dropzone (loaded with file upload)
+   - form-wizard (loaded on wizard pages)
+   - rangeslider (loaded with range components)
+*/

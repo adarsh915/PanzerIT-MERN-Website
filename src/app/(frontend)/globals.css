@@ -1,0 +1,405 @@
+/*
+  Frontend-only globals. The original template CSS controls most styling.
+  This file is scoped only to the (frontend) route group layout.
+*/
+
+:root {
+  --theme-color: #1053f3;
+  --theme-navy-dark: #061153;
+  --theme-blue-light: #79c6ff;
+  --theme-navy-darker: #061238;
+  --theme-blue-medium: #2f63dd;
+  --theme-navy-medium: #123b88;
+  --theme-blue-bright: #2b72ff;
+  --theme-navy-slate: #273553;
+  --theme-navy-deep: #07133d;
+  --theme-navy-slate-light: #34405e;
+  --theme-blue-dark: #051372;
+  --dark-color3: #000000;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide Next.js dev badge/logo if it appears in the corner */
+#next-logo {
+  display: none !important;
+}
+
+/* Hide Next.js DevTools indicator */
+#__next-devtools-indicator,
+[data-nextjs-devtools-indicator],
+[data-nextjs-devtools-button],
+[data-nextjs-devtools] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Import Scroll to Top Button Styles */
+@import '../../styles/scroll-to-top.css';
+
+/* Explore Products section - clickable choose-box cards */
+a.panzer-choose-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+a.panzer-choose-link:hover {
+  opacity: 0.72;
+}
+
+/* Allow choose-box cards to fit content height without artificial empty space */
+.tv-choose-section.style-6 .choose-left .choose-box,
+.tv-choose-section.style-6 .choose-right .choose-box {
+  height: auto !important;
+}
+
+/* ── Contact form icon overlap fix ─────────────────────────── */
+/* The template scoped padding-left & icon colour to .contact_form.
+   We renamed to .panzer-contact-form, so we re-apply those rules here. */
+.tv-contact-section.inner .contact-form .panzer-contact-form .form-grid input {
+  border-radius: 30px;
+  padding-left: 52px;
+}
+
+.tv-contact-section.inner .contact-form .panzer-contact-form .form-grid .form-group .icon {
+  color: var(--theme-color);
+}
+
+.tv-contact-section.inner .contact-form .panzer-contact-form .form-grid .form-group .select2 .selection .select2-selection {
+  border-radius: 30px;
+}
+
+.tv-contact-section.inner .contact-form .panzer-contact-form .form-group textarea {
+  border-radius: 30px !important;
+  height: 170px;
+}
+
+/* ── Form Validation Styles ────────────────────────────────── */
+.panzer-field-error input,
+.panzer-field-error textarea,
+.panzer-field-error select {
+  border-color: #e53e3e !important;
+  background-color: #fff5f5 !important;
+}
+
+.panzer-error-msg {
+  display: block;
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 5px;
+  padding-left: 2px;
+  font-weight: 500;
+}
+
+.panzer-form-success {
+  color: #276749;
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panzer-form-success i {
+  color: #38a169;
+  font-size: 16px;
+}
+
+.panzer-form-error-banner {
+  color: #742a2a;
+  background: #fff5f5;
+  border: 1px solid #fc8181;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panzer-form-error-banner i {
+  color: #e53e3e;
+  font-size: 16px;
+}
+
+.form-group.terms {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.form-group.terms input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--theme-color);
+  cursor: pointer;
+}
+
+.form-group.terms label {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.panzer-field-error.terms label {
+  color: #e53e3e;
+}
+
+/* ── Search Button Styles ────────────────────────────────── */
+.search-btn {
+  cursor: pointer !important;
+  transition: color 0.3s ease !important;
+  color: var(--theme-navy-dark) !important;
+}
+
+.search-btn:hover {
+  color: inherit !important;
+}
+
+i.fa-solid {
+  cursor: pointer !important;
+}
+
+/* ── Brand Extra Cards Styles ────────────────────────────────── */
+.panzer-page-brand-detail .panzer-brand-detail-overview {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview>div {
+  border: 1px solid rgba(6, 17, 118, 0.08);
+  border-radius: 18px;
+  background: var(--cardmention);
+  box-shadow: 0 20px 54px rgba(11, 31, 79, 0.08);
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview h3 {
+  color: var(--theme-navy-darker);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview ul {
+  display: grid;
+  gap: 12px;
+  margin-top: 15px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview li {
+  display: flex;
+  gap: 10px;
+  color: var(--theme-navy-darker);
+  font-size: 15px;
+  line-height: 1.45;
+  /* font-weight: 750; */
+}
+
+.panzer-page-brand-detail .panzer-brand-detail-overview li i {
+  margin-top: 4px;
+  color: var(--theme-color);
+}
+
+/* ── Rich Text Editor Content (Typography Reset) ───────────────── */
+.editor-content {
+  color: inherit;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.editor-content-heading p {
+  margin: 0;
+  display: inline;
+}
+
+
+
+/* ── Capabilities Points Pill Styles (Paragraph Mode) ───────────────── */
+.panzer-page-brand-detail .panzer-brand-detail-capabilities-points p {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  min-height: 40px !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  color: var(--theme-navy-darker) !important;
+  background: #f2f6ff !important;
+  font-size: 14px !important;
+  line-height: 1.25 !important;
+  font-weight: 750 !important;
+  margin: 0 !important;
+}
+
+
+/* Headings */
+.editor-content h1,
+.editor-content h2,
+.editor-content h3,
+.editor-content h4,
+.editor-content h5,
+.editor-content h6 {
+  font-weight: 500;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}
+
+.editor-content h1 {
+  font-size: 2.25em;
+}
+
+.editor-content h2 {
+  font-size: 1.875em;
+}
+
+.editor-content h3 {
+  font-size: 1.5em;
+}
+
+.editor-content h4 {
+  font-size: 1.25em;
+}
+
+.editor-content h5 {
+  font-size: 1.125em;
+}
+
+.editor-content h6 {
+  font-size: 1em;
+}
+
+/* Paragraphs */
+.editor-content p {
+  margin-bottom: 1em;
+}
+
+/* Bold and Italic (Fixes the bold button from text editor) */
+.editor-content strong,
+.editor-content b {
+  font-weight: bold;
+}
+
+.editor-content em,
+.editor-content i {
+  font-style: italic;
+}
+
+.editor-content u {
+  text-decoration: underline;
+}
+
+/* Lists (Highly specific to beat global rules WITHOUT using !important) */
+.editor-content.editor-content.editor-content ul {
+  list-style-type: disc;
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.editor-content.editor-content.editor-content ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.editor-content.editor-content.editor-content li {
+  display: list-item;
+  /* Overrides the aggressive display:flex from panzer-brand-detail-overview */
+  font-weight: inherit;
+  /* Overrides the 750 weight leak */
+  color: inherit;
+  /* Overrides the var(--theme-navy-darker) color leak */
+  margin-bottom: 0.25em;
+}
+
+/* Tables */
+.editor-content table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1.5em;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+
+.editor-content th,
+.editor-content td {
+  border: 1px solid #cbd5e1;
+  /* Nice light gray border */
+  padding: 0.75rem;
+  text-align: left;
+  word-break: break-word;
+}
+
+.editor-content th {
+  background-color: #f8fafc;
+  font-weight: 600;
+}
+
+/* Links & Quotes */
+.editor-content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.editor-content blockquote {
+  border-left: 4px solid #cbd5e1;
+  padding-left: 1em;
+  margin-left: 0;
+  font-style: italic;
+  color: #475569;
+  margin-bottom: 1.5em;
+}
+
+/* Images */
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 1em;
+}

@@ -1,0 +1,326 @@
+@font-face {
+  font-family: 'flaticon';
+  src: url('../fonts/flaticon.eot?hh7uw3');
+  src: url('../fonts/flaticon.eot?hh7uw3#iefix') format('embedded-opentype'),
+    url('../fonts/flaticon.ttf?hh7uw3') format('truetype'),
+    url('../fonts/flaticon.woff?hh7uw3') format('woff'),
+    url('../fonts/flaticon.svg?hh7uw3#flaticon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="flaticon-"],
+[class*=" flaticon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'flaticon' !important;
+  display: inline-block;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-dmap:before {
+  content: "\e900";
+}
+
+.flaticon-dmap2 .path1:before {
+  content: "\e901";
+  color: rgb(0, 0, 0);
+}
+
+.flaticon-dmap2 .path2:before {
+  content: "\e902";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+
+.flaticon-dmap2 .path3:before {
+  content: "\e903";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path4:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path5:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path6:before {
+  content: "\e906";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path7:before {
+  content: "\e907";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path8:before {
+  content: "\e908";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path9:before {
+  content: "\e909";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path10:before {
+  content: "\e90a";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path11:before {
+  content: "\e90b";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path12:before {
+  content: "\e90c";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path13:before {
+  content: "\e90d";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path14:before {
+  content: "\e90e";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path15:before {
+  content: "\e90f";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+
+.flaticon-dmap2 .path16:before {
+  content: "\e910";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+
+.flaticon-dmap2 .path17:before {
+  content: "\e911";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path18:before {
+  content: "\e912";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path19:before {
+  content: "\e913";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path20:before {
+  content: "\e914";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path21:before {
+  content: "\e915";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-dmap2 .path22:before {
+  content: "\e916";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+
+.flaticon-arrows:before {
+  content: "\e917";
+}
+
+.flaticon-bootstrap:before {
+  content: "\e918";
+}
+
+.flaticon-chat:before {
+  content: "\e919";
+}
+
+.flaticon-chat2:before {
+  content: "\e91a";
+}
+
+.flaticon-checked:before {
+  content: "\e91b";
+}
+
+.flaticon-click:before {
+  content: "\e91c";
+}
+
+.flaticon-code:before {
+  content: "\e91d";
+}
+
+.flaticon-css3:before {
+  content: "\e91e";
+}
+
+.flaticon-developer:before {
+  content: "\e91f";
+}
+
+.flaticon-down:before {
+  content: "\e920";
+}
+
+.flaticon-extension:before {
+  content: "\e921";
+}
+
+.flaticon-group:before {
+  content: "\e922";
+}
+
+.flaticon-help:before {
+  content: "\e923";
+}
+
+.flaticon-html:before {
+  content: "\e924";
+}
+
+.flaticon-interview:before {
+  content: "\e925";
+}
+
+.flaticon-layer:before {
+  content: "\e926";
+}
+
+.flaticon-location .path1:before {
+  content: "\e927";
+  color: rgb(35, 30, 31);
+}
+
+.flaticon-location .path2:before {
+  content: "\e928";
+  margin-left: -1em;
+  color: rgb(35, 31, 31);
+}
+
+.flaticon-location .path3:before {
+  content: "\e929";
+  margin-left: -1em;
+  color: rgb(35, 31, 31);
+}
+
+.flaticon-location .path4:before {
+  content: "\e92a";
+  margin-left: -1em;
+  color: rgb(35, 31, 31);
+}
+
+.flaticon-location .path5:before {
+  content: "\e92b";
+  margin-left: -1em;
+  color: rgb(35, 31, 31);
+}
+
+.flaticon-location .path6:before {
+  content: "\e92c";
+  margin-left: -1em;
+  color: rgb(34, 30, 31);
+}
+
+.flaticon-market-analysis:before {
+  content: "\e92d";
+}
+
+.flaticon-next:before {
+  content: "\e92e";
+}
+
+.flaticon-people:before {
+  content: "\e92f";
+}
+
+.flaticon-phone:before {
+  content: "\e930";
+}
+
+.flaticon-right-up:before {
+  content: "\e931";
+}
+
+.flaticon-scribble:before {
+  content: "\e932";
+}
+
+.flaticon-search-user:before {
+  content: "\e933";
+}
+
+.flaticon-service:before {
+  content: "\e934";
+}
+
+.flaticon-share:before {
+  content: "\e935";
+}
+
+.flaticon-shuttle:before {
+  content: "\e936";
+}
+
+.flaticon-shuttle2:before {
+  content: "\e937";
+}
+
+.flaticon-software-development:before {
+  content: "\e938";
+}
+
+.flaticon-star-circle-favourite:before {
+  content: "\e939";
+}
+
+.flaticon-twitter:before {
+  content: "\e93a";
+}
+
+.flaticon-ui-design:before {
+  content: "\e93b";
+}
+
+.flaticon-user:before {
+  content: "\e93c";
+}
